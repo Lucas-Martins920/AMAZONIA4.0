@@ -1,0 +1,7 @@
+opencv-python>=4.9.0
+numpy>=1.26.0
+flask>=3.0.0
+flask-cors>=4.0.0
+reportlab>=4.2.0
+supabase>=2.6.0
+ultralytics>=8.2.0

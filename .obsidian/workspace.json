@@ -1,0 +1,254 @@
+{
+  "main": {
+    "id": "5c04792abda21104",
+    "type": "split",
+    "children": [
+      {
+        "id": "5456418d5e79decf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dc67b10adfdf3a24",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "site/documentacao/Amazonia40_Material_Expandido.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Amazonia40_Material_Expandido"
+            }
+          },
+          {
+            "id": "3c078882a537420f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "site/documentacao/Porque amazonia?.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Porque amazonia?"
+            }
+          },
+          {
+            "id": "c36340bd7db2b9c5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "documentação_amazon 1.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "documentação_amazon 1"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7201bb80d8ee29a6",
+    "type": "split",
+    "children": [
+      {
+        "id": "61fd2f02c102bf2a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8ae21b09289d105c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de ficheiros"
+            }
+          },
+          {
+            "id": "37130706b859172e",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "82dbc26f25e0f22b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "dc662249522fbda5",
+    "type": "split",
+    "children": [
+      {
+        "id": "80d9750e798486a7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "703d1033d906b29b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos"
+            }
+          },
+          {
+            "id": "4bc21a1ebb0f4787",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links Externos"
+            }
+          },
+          {
+            "id": "aac48c912c82327c",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "430473f55216aee3",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "c59028305308f8c5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Índice"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir Quick Switcher": false,
+      "graph:Abrir Visualização de diagrama de grafo": false,
+      "canvas:Criar novo Canvas": false,
+      "daily-notes:Abrir nota de hoje": false,
+      "templates:Inserir templates": false,
+      "command-palette:Abrir paleta de comando": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "8ae21b09289d105c",
+  "lastOpenFiles": [
+    "sistema/app.js",
+    "sistema/styles.css",
+    "sistema/index.html",
+    "sistema/ia_camera/__pycache__/camera_ia.cpython-312.pyc",
+    "sistema/ia_camera/__pycache__/api.cpython-312.pyc",
+    "sistema/ia_camera/__pycache__",
+    "documentação_amazon 1.md",
+    "site/documentacao/documentacao_amazon.md",
+    "sistema/modelos/README.md",
+    "sistema/ia_camera/README.md",
+    "sistema/ia_camera/api.py",
+    "sistema/ia_camera/camera_ia.py",
+    "sistema/ia_camera/requirements.txt",
+    "sistema/modelos",
+    "sistema/ia_camera",
+    "site/documentacao/Porque amazonia?.md",
+    "seção.md",
+    "site/documentacao/Amazonia40_Material_Expandido.md",
+    "site/documentacao/AMAZÔNIA 4.0 — Documentação Técnica.md",
+    "site/imagem/Pasted image.png",
+    "sistema/documentacao/pantanal_queimadas_ambientais.md",
+    "sistema/documentacao/PANTANAL.md",
+    "site/documentacao/PANTANAL.md",
+    "site/documentacao/pantanal_queimadas_ambientais.md",
+    "site/documentacao/monitoramento.md",
+    "sistema/documentacao/monitoramento.md",
+    "sistema/documentacao/MANDACARU.md",
+    "site/documentacao/MANDACARU.md",
+    "sistema/documentacao/complemento.md",
+    "site/documentacao/complemento.md",
+    "sistema/documentacao/Amazonia40_Material_Expandido.md",
+    "sistema/documentacao/RELATÓRIO DE PESQUISA TÉCNICA.md",
+    "site/documentacao/RELATÓRIO DE PESQUISA TÉCNICA.md",
+    "sistema/documentacao/AMAZÔNIA 4.0 — Documentação Técnica.md",
+    "sistema/imagem/Pasted image.png",
+    "DOCUMETAÇÃO/complemento.md",
+    "complemento.md",
+    "DOCUMETAÇÃO/RELATÓRIO DE PESQUISA TÉCNICA.md",
+    "imagem/Pasted image.png"
+  ]
+}

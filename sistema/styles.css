@@ -1,0 +1,532 @@
+:root {
+  --green-dark: #0f291e;
+  --green-main: #1b4332;
+  --green-light: #2d6a4f;
+  --green-soft: #d8f3dc;
+  --sand: #f4f1de;
+  --earth: #e07a5f;
+  --gold: #d9a441;
+  --water: #457b9d;
+  --text-main: #2b2d42;
+  --text-muted: #6c757d;
+  --bg-white: #ffffff;
+  --bg-soft: #f8f9fa;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Georgia', serif; /* Fonte mais clássica para textos longos */
+  color: var(--text-main);
+  background-color: var(--bg-white);
+  line-height: 1.7;
+}
+
+h1, h2, h3, .brand strong, .button, nav a {
+  font-family: 'Inter', system-ui, sans-serif; /* Contraste moderno nos títulos */
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* CABEÇALHO LIMPO */
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eaeaea;
+  z-index: 100;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  background: var(--green-main);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: 800;
+}
+.brand strong { display: block; font-size: 1.1rem; color: var(--green-dark); }
+.brand small { font-size: 0.8rem; color: var(--text-muted); font-family: sans-serif; }
+
+nav { display: flex; gap: 24px; }
+nav a { font-weight: 600; font-size: 0.9rem; color: var(--text-muted); transition: color 0.3s; }
+nav a:hover { color: var(--green-main); }
+
+/* HERO - IMPACTO VISUAL */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(120deg, rgba(15, 41, 30, 0.96), rgba(27, 67, 50, 0.92)),
+    radial-gradient(circle at 82% 18%, rgba(217, 164, 65, 0.32), transparent 28%),
+    radial-gradient(circle at 12% 88%, rgba(69, 123, 157, 0.28), transparent 30%);
+  color: white;
+  padding: 120px 5%;
+  text-align: center;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 8% -70px auto;
+  width: min(420px, 55vw);
+  height: min(420px, 55vw);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 46% 54% 58% 42%;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.eyebrow {
+  display: inline-block;
+  color: var(--earth);
+  font-family: sans-serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+}
+h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 30px; }
+.hero p { font-size: 1.3rem; color: #d8e2dc; margin-bottom: 40px; }
+
+.button {
+  display: inline-block;
+  background: var(--earth);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+}
+.button:hover { background: #d06a50; transform: translateY(-2px); }
+
+/* SEÇÕES GENÉRICAS */
+.section { padding: 100px 5%; }
+.bg-soft { background-color: var(--bg-soft); }
+.section-heading { text-align: center; max-width: 700px; margin: 0 auto 60px; }
+.section-heading.align-left { text-align: left; margin-left: 0; }
+.section-heading h2 { font-size: 2.5rem; color: var(--green-dark); margin-bottom: 20px; }
+.section-heading p { font-size: 1.1rem; color: var(--text-muted); }
+
+/* CRISE AMBIENTAL */
+.crisis-section {
+  background:
+    linear-gradient(90deg, rgba(244, 241, 222, 0.74), rgba(255, 255, 255, 0.92)),
+    var(--bg-white);
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.impact-grid article {
+  padding: 28px;
+  background: white;
+  border: 1px solid #ece7d8;
+  border-radius: 8px;
+  box-shadow: 0 12px 34px rgba(27, 67, 50, 0.06);
+}
+
+.impact-grid span,
+.process span,
+.card-meta {
+  display: inline-block;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.impact-grid span {
+  color: var(--earth);
+  margin-bottom: 18px;
+}
+
+.impact-grid h3 {
+  color: var(--green-dark);
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+}
+
+.impact-grid p {
+  color: var(--text-muted);
+}
+
+/* GRID DOS BIOMAS */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.content-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
+}
+.content-card:hover { transform: translateY(-5px); }
+.card-visual {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background-color: var(--green-light);
+}
+
+.card-visual::before,
+.card-visual::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+}
+
+.card-visual::before {
+  width: 180px;
+  height: 180px;
+  right: -50px;
+  top: -40px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.card-visual::after {
+  width: 260px;
+  height: 110px;
+  left: -55px;
+  bottom: 20px;
+  background: rgba(255, 255, 255, 0.14);
+  transform: rotate(-18deg);
+}
+
+.amazonia-bg {
+  background:
+    linear-gradient(145deg, #0b3d2c, #2d6a4f),
+    var(--green-light);
+}
+
+.caatinga-bg {
+  background:
+    linear-gradient(145deg, #7f5539, #e07a5f),
+    var(--earth);
+}
+
+.cerrado-bg {
+  background:
+    linear-gradient(145deg, #606c38, #d9a441),
+    var(--gold);
+}
+
+.mata-bg {
+  background:
+    linear-gradient(145deg, #1d3557, #457b9d),
+    var(--water);
+}
+
+.card-text { padding: 30px; }
+.card-text h3 { color: var(--green-dark); margin-bottom: 15px; font-size: 1.5rem; }
+.card-meta {
+  color: var(--earth);
+  margin: -4px 0 16px;
+}
+
+/* LAYOUT DE ESPÉCIES (Mais como um artigo) */
+.feature-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.feature-box {
+  position: relative;
+  background: var(--sand);
+  padding: 40px;
+  border-left: 6px solid var(--earth);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.feature-box::after {
+  content: "";
+  position: absolute;
+  inset: 18px 18px auto auto;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(224, 122, 95, 0.28);
+  border-radius: 45% 55% 60% 40%;
+}
+.tag {
+  display: inline-block;
+  background: var(--green-main);
+  color: white;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-family: sans-serif;
+  font-weight: bold;
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+.feature-info h3 { font-size: 1.8rem; margin-bottom: 15px; color: var(--green-dark); }
+.feature-info p { font-size: 1.1rem; }
+
+.bioeconomy-highlight {
+  max-width: 900px;
+  margin: 34px auto 0;
+}
+
+.bioeconomy-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
+  gap: 24px;
+  align-items: center;
+  padding: 34px;
+  background:
+    linear-gradient(135deg, rgba(27, 67, 50, 0.96), rgba(45, 106, 79, 0.94)),
+    var(--green-main);
+  color: white;
+  border: 1px solid rgba(217, 164, 65, 0.55);
+  border-radius: 8px;
+  box-shadow: 0 20px 48px rgba(15, 41, 30, 0.16);
+}
+
+.bioeconomy-card .eyebrow {
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.bioeconomy-card h3 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.bioeconomy-card p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.08rem;
+}
+
+.bioeconomy-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bioeconomy-products span,
+.bioeconomy-mini span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 12px;
+  background: rgba(217, 164, 65, 0.16);
+  border: 1px solid rgba(217, 164, 65, 0.52);
+  border-radius: 999px;
+  color: #fff5d8;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.bioeconomy-proof {
+  grid-column: 1 / -1;
+  display: block;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--gold);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+.species-card {
+  padding: 22px;
+  background: white;
+  border: 1px solid #ece7d8;
+  border-radius: 8px;
+}
+
+.species-card.primary {
+  border-color: rgba(217, 164, 65, 0.72);
+  box-shadow: 0 14px 34px rgba(27, 67, 50, 0.1);
+}
+
+.bioeconomy-mini {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 16px;
+  background: rgba(216, 243, 220, 0.54);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+}
+
+.bioeconomy-mini span {
+  justify-self: start;
+  color: var(--green-dark);
+  background: rgba(217, 164, 65, 0.22);
+}
+
+.bioeconomy-mini strong {
+  color: var(--green-dark);
+}
+
+.bioeconomy-mini small {
+  color: var(--text-muted);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+/* TECNOLOGIA */
+.tech-section {
+  background: var(--green-dark);
+  color: white;
+}
+
+.tech-section .section-heading h2,
+.tech-section .section-heading p {
+  color: white;
+}
+
+.tech-section .section-heading p {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.process {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 1100px;
+  margin: 0 auto 34px;
+}
+
+.process article {
+  min-height: 230px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+}
+
+.process span {
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+.process h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.process p {
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.system-callout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+  background: white;
+  color: var(--text-main);
+  border-radius: 8px;
+}
+
+.system-callout h3 {
+  color: var(--green-dark);
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.system-callout p {
+  color: var(--text-muted);
+}
+
+/* RODAPÉ */
+footer {
+  background: var(--text-main);
+  color: white;
+  text-align: center;
+  padding: 40px 5%;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  .impact-grid,
+  .process {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .system-callout {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .bioeconomy-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero,
+  .section {
+    padding: 72px 6%;
+  }
+
+  h1 {
+    font-size: 2.45rem;
+  }
+
+  .hero p {
+    font-size: 1.08rem;
+  }
+
+  .section-heading h2 {
+    font-size: 2rem;
+  }
+
+  .impact-grid,
+  .process {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-box,
+  .system-callout,
+  .bioeconomy-card {
+    padding: 26px;
+  }
+
+  .bioeconomy-card h3 {
+    font-size: 1.65rem;
+  }
+}

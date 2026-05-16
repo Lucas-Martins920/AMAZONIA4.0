@@ -1,0 +1,1446 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amazônia 4.0 | Educação Ambiental e Recuperação</title>
+    <meta name="description" content="Conheça os biomas brasileiros, seus desafios climáticos e as espécies nativas ideais para a restauração ecológica." />
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      /* ── ABAS ── */
+      .tab-switcher {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 200;
+        display: flex;
+        background: rgba(15, 41, 30, 0.92);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 999px;
+        padding: 6px;
+        gap: 4px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      }
+      .tab-btn {
+        padding: 10px 28px;
+        border: none;
+        background: transparent;
+        color: rgba(255,255,255,0.6);
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 0.88rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.25s;
+        white-space: nowrap;
+      }
+      .tab-btn.active {
+        background: var(--earth, #e07a5f);
+        color: white;
+      }
+      .tab-btn:hover:not(.active) { color: white; }
+
+      .tab-panel { display: none; }
+      .tab-panel.active { display: block; }
+
+      /* ── SISTEMA ── */
+      .sistema-layout {
+        min-height: 100vh;
+        background: #0d1f17;
+        color: white;
+        padding-bottom: 100px;
+      }
+
+      .sistema-header {
+        background: rgba(15, 41, 30, 0.98);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding: 18px 5%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .sistema-brand {
+        display: flex; align-items: center; gap: 10px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 1.05rem;
+        color: white;
+      }
+      .sistema-brand .dot {
+        width: 10px; height: 10px;
+        background: #4caf50;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #4caf50;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+      .sistema-stats {
+        display: flex; gap: 24px; flex-wrap: wrap;
+      }
+      .stat-pill {
+        display: flex; align-items: center; gap: 8px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 6px 16px;
+        border-radius: 999px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.82rem;
+      }
+      .stat-pill strong { color: #d9a441; }
+
+      .sistema-body {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 0;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 28px 5%;
+        gap: 24px;
+      }
+
+      /* ── PAINEL ESQUERDO: ALERTAS ── */
+      .alertas-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .panel-title {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 4px;
+      }
+
+      .alerta-card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 18px 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .alerta-card::before {
+        content: "";
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 3px;
+        background: var(--alerta-cor, #e07a5f);
+        border-radius: 3px 0 0 3px;
+      }
+      .alerta-card:hover, .alerta-card.selected {
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.18);
+        transform: translateX(4px);
+      }
+      .alerta-card.selected {
+        border-color: rgba(217,164,65,0.4);
+        background: rgba(217,164,65,0.06);
+      }
+      .alerta-biome {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--alerta-cor, #e07a5f);
+        margin-bottom: 6px;
+      }
+      .alerta-title {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: white;
+        margin-bottom: 4px;
+        line-height: 1.3;
+      }
+      .alerta-desc {
+        font-size: 0.82rem;
+        color: rgba(255,255,255,0.5);
+        line-height: 1.5;
+      }
+      .alerta-badge {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        background: rgba(224,122,95,0.15);
+        color: #e07a5f;
+        border: 1px solid rgba(224,122,95,0.3);
+      }
+      .alerta-badge.severo { background: rgba(220,53,69,0.15); color: #ff6b6b; border-color: rgba(220,53,69,0.3); }
+      .alerta-badge.moderado { background: rgba(217,164,65,0.15); color: #d9a441; border-color: rgba(217,164,65,0.3); }
+      .alerta-badge.critico { background: rgba(180,0,0,0.2); color: #ff4444; border-color: rgba(180,0,0,0.4); }
+
+      /* Novo alerta */
+      .novo-alerta-form {
+        background: rgba(255,255,255,0.03);
+        border: 1px dashed rgba(255,255,255,0.12);
+        border-radius: 10px;
+        padding: 18px 20px;
+      }
+      .novo-alerta-form .panel-title { margin-bottom: 14px; }
+      .form-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .form-field label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .form-field input,
+      .form-field select,
+      .form-field textarea {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        color: white;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.88rem;
+        padding: 10px 12px;
+        outline: none;
+        transition: border 0.2s;
+        resize: none;
+      }
+      .form-field input:focus,
+      .form-field select:focus,
+      .form-field textarea:focus {
+        border-color: rgba(217,164,65,0.5);
+      }
+      .form-field select option { background: #1b3a2a; }
+      .btn-cadastrar {
+        width: 100%;
+        padding: 10px;
+        background: rgba(45,106,79,0.5);
+        border: 1px solid rgba(45,106,79,0.7);
+        border-radius: 6px;
+        color: white;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-cadastrar:hover { background: rgba(45,106,79,0.8); }
+
+      /* ── PAINEL DIREITO: DIAGNÓSTICO ── */
+      .diagnostico-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .diag-placeholder {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        min-height: 400px;
+        background: rgba(255,255,255,0.02);
+        border: 1px dashed rgba(255,255,255,0.1);
+        border-radius: 12px;
+        color: rgba(255,255,255,0.3);
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.9rem;
+        text-align: center;
+        padding: 40px;
+      }
+      .diag-placeholder svg { opacity: 0.2; }
+
+      .diag-content { display: none; }
+      .diag-content.visible { display: flex; flex-direction: column; gap: 20px; }
+
+      .diag-top {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 24px 28px;
+      }
+      .diag-top-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .diag-biome-tag {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: rgba(45,106,79,0.3);
+        border: 1px solid rgba(45,106,79,0.6);
+        color: #74c69d;
+      }
+      .diag-title {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 8px;
+        line-height: 1.2;
+      }
+      .diag-problem {
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.6);
+        line-height: 1.6;
+      }
+
+      .diag-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .metric-box {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 8px;
+        padding: 14px 16px;
+      }
+      .metric-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 6px;
+      }
+      .metric-value {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #d9a441;
+      }
+
+      /* Impacto humano */
+      .impacto-box {
+        background: rgba(224,122,95,0.07);
+        border: 1px solid rgba(224,122,95,0.2);
+        border-radius: 12px;
+        padding: 20px 24px;
+      }
+      .impacto-box .panel-title { color: #e07a5f; margin-bottom: 12px; }
+      .impacto-list {
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .impacto-item {
+        display: flex; gap: 10px; align-items: flex-start;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.75);
+        line-height: 1.5;
+      }
+      .impacto-item::before {
+        content: "▸";
+        color: #e07a5f;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* Espécies */
+      .especies-section {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 24px 28px;
+      }
+      .especies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .especie-card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 18px;
+        transition: all 0.2s;
+      }
+      .especie-card.top {
+        border-color: rgba(217,164,65,0.45);
+        background: rgba(217,164,65,0.07);
+      }
+      .especie-card:hover { transform: translateY(-3px); }
+      .especie-rank {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #d9a441;
+        margin-bottom: 8px;
+      }
+      .especie-rank.prata { color: rgba(255,255,255,0.5); }
+      .especie-rank.bronze { color: #cd7f32; }
+      .especie-nome {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        color: white;
+        margin-bottom: 3px;
+      }
+      .especie-cientifico {
+        font-style: italic;
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 10px;
+      }
+      .especie-score-bar {
+        height: 3px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 8px;
+      }
+      .especie-score-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #2d6a4f, #d9a441);
+      }
+      .especie-score-label {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.45);
+      }
+      .especie-motivo {
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.5);
+        line-height: 1.5;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255,255,255,0.07);
+      }
+
+      /* ── CÂMERA IA ── */
+      .camera-section {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 24px 28px;
+      }
+      .camera-area {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 16px;
+        align-items: start;
+      }
+      .camera-upload {
+        background: rgba(255,255,255,0.04);
+        border: 2px dashed rgba(255,255,255,0.12);
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+      }
+      .camera-upload:hover {
+        border-color: rgba(217,164,65,0.4);
+        background: rgba(217,164,65,0.04);
+      }
+      .camera-upload input[type=file] {
+        position: absolute; inset: 0; opacity: 0; cursor: pointer;
+      }
+      .camera-upload-icon {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+      .camera-upload p {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.4);
+        line-height: 1.5;
+      }
+      .camera-preview {
+        max-width: 100%;
+        border-radius: 8px;
+        display: none;
+      }
+      .camera-preview.visible { display: block; }
+
+      .camera-resultado {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 20px;
+        display: none;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .camera-resultado.visible { display: flex; }
+      .camera-resultado-classe {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: white;
+      }
+      .camera-resultado-metodo {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255,255,255,0.4);
+      }
+      .camera-resultado-conf {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .conf-bar-wrap {
+        flex: 1;
+        height: 6px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .conf-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #2d6a4f, #d9a441);
+        border-radius: 999px;
+        transition: width 0.5s;
+      }
+      .conf-pct {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.85rem;
+        font-weight: 800;
+        color: #d9a441;
+        min-width: 40px;
+      }
+      .camera-resultado-explicacao {
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.6);
+        line-height: 1.6;
+      }
+      .camera-analisar-btn {
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #1b4332, #2d6a4f);
+        border: 1px solid rgba(45,106,79,0.6);
+        border-radius: 8px;
+        color: white;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 0.88rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-top: 8px;
+      }
+      .camera-analisar-btn:hover {
+        background: linear-gradient(135deg, #2d6a4f, #40916c);
+        transform: translateY(-1px);
+      }
+      .camera-analisar-btn:disabled {
+        opacity: 0.5; cursor: not-allowed; transform: none;
+      }
+      .camera-aviso-api {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.3);
+        line-height: 1.5;
+        margin-top: 4px;
+      }
+
+      /* Exportar */
+      .exportar-btn {
+        align-self: flex-end;
+        padding: 10px 22px;
+        background: transparent;
+        border: 1px solid rgba(217,164,65,0.4);
+        border-radius: 8px;
+        color: #d9a441;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .exportar-btn:hover {
+        background: rgba(217,164,65,0.1);
+        border-color: rgba(217,164,65,0.7);
+      }
+
+      .notif {
+        position: fixed;
+        bottom: 100px;
+        right: 32px;
+        background: rgba(27,67,50,0.96);
+        border: 1px solid rgba(116,198,157,0.4);
+        color: #74c69d;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s;
+        pointer-events: none;
+        z-index: 300;
+      }
+      .notif.show { opacity: 1; transform: translateY(0); }
+
+      @media (max-width: 900px) {
+        .sistema-body { grid-template-columns: 1fr; }
+        .camera-area { grid-template-columns: 1fr; }
+        .diag-metrics { grid-template-columns: 1fr 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- SWITCHER DE ABAS -->
+    <div class="tab-switcher">
+      <button class="tab-btn active" onclick="switchTab('site')"> Site Informativo</button>
+      <button class="tab-btn" onclick="switchTab('sistema')"> Sistema</button>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         ABA 1: SITE INFORMATIVO
+    ══════════════════════════════════════ -->
+    <div id="tab-site" class="tab-panel active">
+      <header class="topbar">
+        <a class="brand" href="#inicio">
+          <span class="brand-mark">A4</span>
+          <span>
+            <strong>Amazônia 4.0</strong>
+            <small>Educação Ambiental</small>
+          </span>
+        </a>
+        <nav aria-label="Navegação principal">
+          <a href="#o-problema">A Crise</a>
+          <a href="#biomas">Os Biomas</a>
+          <a href="#especies">Espécies de Recuperação</a>
+          <a href="#tecnologia">Amazônia 4.0</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" id="inicio">
+          <div class="hero-content">
+            <span class="eyebrow">Projeto de Pesquisa & Inovação</span>
+            <h1>A Floresta sob Pressão</h1>
+            <p>
+              O desmatamento e as queimadas vão muito além da derrubada de árvores. A perda da biodiversidade ameaça os Rios Voadores, acelera o aquecimento global e destrói o modo de vida de milhares de comunidades.
+            </p>
+            <a class="button primary" href="#biomas">Conhecer os Biomas Brasileiros</a>
+          </div>
+        </section>
+
+        <section class="section crisis-section" id="o-problema">
+          <div class="section-heading align-left">
+            <span class="eyebrow">A crise ambiental</span>
+            <h2>Quando a floresta perde cobertura, a vida ao redor também perde equilíbrio</h2>
+            <p>Queimadas, retirada de mata ciliar, erosão e conversão de áreas nativas não são problemas isolados. Eles afetam água, solo, clima, saúde e renda de comunidades inteiras.</p>
+          </div>
+          <div class="impact-grid">
+            <article><span>01</span><h3>Água</h3><p>Sem vegetação nas margens, rios recebem mais sedimentos, perdem qualidade e ficam mais vulneráveis ao assoreamento.</p></article>
+            <article><span>02</span><h3>Solo</h3><p>A chuva carrega nutrientes, abre erosões e reduz a capacidade produtiva de áreas rurais e comunidades tradicionais.</p></article>
+            <article><span>03</span><h3>Clima</h3><p>A perda de floresta enfraquece a evapotranspiração, altera chuvas e aumenta a temperatura local.</p></article>
+            <article><span>04</span><h3>Pessoas</h3><p>Fumaça, enchentes, escassez de água e perda de alimentos tornam a crise ambiental uma crise social.</p></article>
+          </div>
+        </section>
+
+        <section class="section bg-soft" id="biomas">
+          <div class="section-heading">
+            <span class="eyebrow">Patrimônio natural</span>
+            <h2>A Riqueza dos Nossos Biomas</h2>
+            <p>Cada região possui clima, fauna e desafios únicos. Compreender essas diferenças é o primeiro passo para a recuperação ambiental.</p>
+          </div>
+          <div class="content-grid">
+            <article class="content-card">
+              <div class="card-visual amazonia-bg"></div>
+              <div class="card-text">
+                <h3>Amazônia</h3>
+                <span class="card-meta">Rios voadores · floresta úmida · biodiversidade</span>
+                <p>O maior bioma brasileiro abriga a maior floresta tropical do mundo. Funciona como uma "bomba biótica", criando os <strong>Rios Voadores</strong>, que levam chuvas para todo o continente. Hoje sofre severamente com desmatamento e garimpo ilegal.</p>
+              </div>
+            </article>
+            <article class="content-card">
+              <div class="card-visual caatinga-bg"></div>
+              <div class="card-text">
+                <h3>Caatinga</h3>
+                <span class="card-meta">Semiárido · plantas resistentes · solo frágil</span>
+                <p>Bioma exclusivo do semiárido brasileiro. Possui vegetação altamente adaptada à falta de água. O principal impacto humano é a degradação de encostas que, somada à seca, causa erosão e perda irreversível do solo fértil.</p>
+              </div>
+            </article>
+            <article class="content-card">
+              <div class="card-visual cerrado-bg"></div>
+              <div class="card-text">
+                <h3>Cerrado</h3>
+                <span class="card-meta">Nascentes · raízes profundas · recarga hídrica</span>
+                <p>O "berço das águas" brasileiro. Suas raízes profundas alimentam nascentes e rios importantes. Sua conversão em pastagens ameaça o abastecimento hídrico do país.</p>
+              </div>
+            </article>
+            <article class="content-card">
+              <div class="card-visual mata-bg"></div>
+              <div class="card-text">
+                <h3>Mata Atlântica</h3>
+                <span class="card-meta">Mata ciliar · encostas · abastecimento urbano</span>
+                <p>Floresta tropical costeira riquíssima, historicamente a mais desmatada pela ocupação humana. A perda de sua mata ciliar assoreia rios e prejudica o abastecimento de grandes centros urbanos.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="especies">
+          <div class="section-heading">
+            <span class="eyebrow">Restauração ecológica</span>
+            <h2>Soluções Nativas para a Restauração</h2>
+            <p>A recuperação de áreas degradadas não se faz com qualquer planta. É necessário respeitar a biologia de cada bioma utilizando espécies-chave.</p>
+          </div>
+          <div class="feature-layout">
+            <div class="feature-box">
+              <div class="feature-info">
+                <span class="tag">Caatinga</span>
+                <h3>O Mandacaru e a Resiliência</h3>
+                <p>Com origem Tupi, significa "feixe cheio de espinhos". O Mandacaru é vital para a Caatinga: seu caule é rico em água e fécula, e suas flores noturnas alimentam polinizadores na época mais dura do ano.</p>
+              </div>
+            </div>
+            <div class="feature-box">
+              <div class="feature-info">
+                <span class="tag">Caatinga</span>
+                <h3>O Umbuzeiro (Árvore Sagrada)</h3>
+                <p>O Umbuzeiro sobrevive a longas estiagens graças aos seus xilopódios — raízes que funcionam como caixas d'água subterrâneas. Seus frutos são a base econômica e alimentar de milhares de agricultores familiares no semiárido.</p>
+              </div>
+            </div>
+            <div class="feature-box">
+              <div class="feature-info">
+                <span class="tag">Amazônia</span>
+                <h3>Bioeconomia: Castanheira e Andiroba</h3>
+                <p>Na Amazônia, restaurar a floresta também é gerar renda. A Castanheira tem alto potencial de sequestro de carbono, enquanto a Andiroba fornece óleos medicinais que valorizam a floresta em pé.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bioeconomy-highlight" style="max-width:900px;margin:34px auto 0;">
+            <article class="bioeconomy-card">
+              <div>
+                <span class="eyebrow">Potencial Bioeconômico</span>
+                <h3>Castanheira</h3>
+                <p>Alto valor em cadeias alimentares, extrativismo comunitário e créditos de carbono.</p>
+              </div>
+              <div class="bioeconomy-products">
+                <span>Castanha</span><span>Óleo alimentício</span><span>Farinha proteica</span>
+              </div>
+              <strong class="bioeconomy-proof">Floresta em pé gera lucro sustentável.</strong>
+            </article>
+          </div>
+        </section>
+
+        <section class="section tech-section" id="tecnologia">
+          <div class="section-heading">
+            <span class="eyebrow">Por que 4.0?</span>
+            <h2>Educação ambiental conectada a dados</h2>
+            <p>O projeto traduz conceitos de monitoramento ambiental em uma experiência simples: observar o território, interpretar o risco e sugerir um caminho de recuperação.</p>
+          </div>
+          <div class="process">
+            <article>
+              <span>Entrada</span>
+              <h3>Imagem ou alerta</h3>
+              <p>O visitante entende que uma área degradada pode ser observada por mapa, foto ou registro de campo.</p>
+            </article>
+            <article>
+              <span>Análise</span>
+              <h3>Bioma, solo e impacto</h3>
+              <p>O sistema cruza informações ambientais para explicar o problema em linguagem acessível.</p>
+            </article>
+            <article>
+              <span>Orientação</span>
+              <h3>Espécie recomendada</h3>
+              <p>A resposta final indica espécies nativas que fazem sentido para o bioma e para o nível de degradação.</p>
+            </article>
+          </div>
+          <div class="system-callout">
+            <div>
+              <span class="eyebrow">Fechamento da apresentação</span>
+              <h3>Da informação para a ação</h3>
+              <p>Depois de entender os biomas e os impactos, a proposta 4.0 mostra como dados podem orientar decisões de recuperação ambiental.</p>
+            </div>
+            <button class="button primary" onclick="switchTab('sistema')">Ver o Sistema →</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p><strong>Amazônia 4.0</strong> — Projeto de pesquisa educativa desenvolvido para fins acadêmicos.<br>
+        Fontes de pesquisa: IBGE, INPE, MapBiomas Brasil, Embrapa e ICMBio.</p>
+      </footer>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         ABA 2: SISTEMA
+    ══════════════════════════════════════ -->
+    <div id="tab-sistema" class="tab-panel">
+      <div class="sistema-layout">
+
+        <!-- Header do sistema -->
+        <div class="sistema-header">
+          <div class="sistema-brand">
+            <div class="dot"></div>
+            Amazônia 4.0 — Sistema de Monitoramento
+          </div>
+          <div class="sistema-stats">
+            <div class="stat-pill">Alertas ativos: <strong id="stat-alertas">4</strong></div>
+            <div class="stat-pill">Biomas monitorados: <strong>4</strong></div>
+            <div class="stat-pill">Espécies cadastradas: <strong>6</strong></div>
+          </div>
+        </div>
+
+        <div class="sistema-body">
+
+          <!-- COLUNA ESQUERDA -->
+          <div class="alertas-panel">
+            <div class="panel-title">Fila de Alertas Ambientais</div>
+
+            <div id="alertas-lista"></div>
+
+            <!-- Câmera IA -->
+            <div class="camera-section" style="margin-top:8px;">
+              <div class="panel-title">Câmera IA — Análise de Imagem</div>
+              <div class="camera-area" style="grid-template-columns:1fr; gap:12px;">
+                <!-- Seletor: Webcam ou Arquivo -->
+                <div style="display:flex; gap:8px; margin-bottom:8px;">
+                  <button class="camera-analisar-btn" onclick="abrirWebcam()" id="btn-webcam" style="flex:1; background:linear-gradient(135deg, #1b4332, #2d6a4f);">
+                    📷 Abrir Webcam
+                  </button>
+                  <button class="camera-analisar-btn" onclick="document.getElementById('camera-input').click()" style="flex:1; background:linear-gradient(135deg, #2d6a4f, #40916c);">
+                    🖼️ Upload de Imagem
+                  </button>
+                </div>
+
+                <!-- Webcam View -->
+                <div id="webcam-container" style="display:none; position:relative;">
+                  <video id="webcam-video" style="width:100%; border-radius:8px; background:#000; max-height:300px;"></video>
+                  <div style="display:flex; gap:8px; margin-top:8px;">
+                    <button class="camera-analisar-btn" onclick="capturarWebcam()" style="flex:1;">
+                      📸 Capturar Foto
+                    </button>
+                    <button class="camera-analisar-btn" onclick="fecharWebcam()" style="flex:1; background:rgba(220,53,69,0.6);">
+                      ❌ Fechar
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Upload de Arquivo -->
+                <div class="camera-upload" id="camera-upload-area">
+                  <input type="file" id="camera-input" accept="image/*" onchange="handleImageUpload(event)" />
+                  <div class="camera-upload-icon">📁</div>
+                  <p>Clique para enviar uma imagem e analisar o ambiente</p>
+                </div>
+
+                <!-- Preview da Imagem -->
+                <img class="camera-preview" id="camera-preview" src="" alt="Preview" />
+                
+                <!-- Resultado da Análise -->
+                <div class="camera-resultado" id="camera-resultado">
+                  <div class="camera-resultado-metodo" id="cam-metodo"></div>
+                  <div class="camera-resultado-classe" id="cam-classe"></div>
+                  <div class="camera-resultado-conf">
+                    <div class="conf-bar-wrap"><div class="conf-bar" id="cam-conf-bar" style="width:0%"></div></div>
+                    <div class="conf-pct" id="cam-conf-pct">0%</div>
+                  </div>
+                  <div class="camera-resultado-explicacao" id="cam-explicacao"></div>
+                </div>
+
+                <!-- Botão Analisar -->
+                <button class="camera-analisar-btn" id="btn-analisar" onclick="analisarImagem()" disabled>
+                   Analisar com IA
+                </button>
+
+                <div class="camera-aviso-api">
+                  A API Python (localhost:5000) é opcional. Sem ela, a análise usa simulação local baseada no bioma do alerta selecionado.
+                </div>
+              </div>
+            </div>
+
+            <!-- Cadastro novo alerta -->
+            <div class="novo-alerta-form">
+              <div class="panel-title">Cadastrar Novo Alerta</div>
+              <div class="form-field">
+                <label>Título</label>
+                <input type="text" id="novo-titulo" placeholder="Ex: Margem desmatada no igarapé" />
+              </div>
+              <div class="form-field">
+                <label>Bioma</label>
+                <select id="novo-bioma">
+                  <option value="Amazônia">Amazônia</option>
+                  <option value="Cerrado">Cerrado</option>
+                  <option value="Caatinga">Caatinga</option>
+                  <option value="Mata Atlântica">Mata Atlântica</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Nível de degradação</label>
+                <select id="novo-degradacao">
+                  <option value="Baixa">Baixa</option>
+                  <option value="Moderada">Moderada</option>
+                  <option value="Severa">Severa</option>
+                  <option value="Crítica">Crítica</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Descrição</label>
+                <textarea id="novo-desc" rows="2" placeholder="Descreva o problema observado..."></textarea>
+              </div>
+              <button class="btn-cadastrar" onclick="cadastrarAlerta()">+ Cadastrar Alerta</button>
+            </div>
+          </div>
+
+          <!-- COLUNA DIREITA: DIAGNÓSTICO -->
+          <div class="diagnostico-panel">
+
+            <div class="diag-placeholder" id="diag-placeholder">
+              <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 16l4.553-2.276A1 1 0 0021 19.382V8.618a1 1 0 00-.553-.894L15 5m0 18V5m0 0L9 7"/>
+              </svg>
+              <span>Selecione um alerta na lista ao lado para ver o diagnóstico completo</span>
+            </div>
+
+            <div class="diag-content" id="diag-content">
+
+              <div class="diag-top">
+                <div class="diag-top-header">
+                  <div>
+                    <div class="diag-biome-tag" id="diag-biome-tag"></div>
+                  </div>
+                  <button class="exportar-btn" onclick="exportarRelatorio()">⬇ Exportar .txt</button>
+                </div>
+                <div class="diag-title" id="diag-title"></div>
+                <div class="diag-problem" id="diag-problem"></div>
+                <div class="diag-metrics">
+                  <div class="metric-box">
+                    <div class="metric-label">Solo</div>
+                    <div class="metric-value" id="diag-solo">—</div>
+                  </div>
+                  <div class="metric-box">
+                    <div class="metric-label">Degradação</div>
+                    <div class="metric-value" id="diag-deg">—</div>
+                  </div>
+                  <div class="metric-box">
+                    <div class="metric-label">Prioridade</div>
+                    <div class="metric-value" id="diag-prior">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="impacto-box">
+                <div class="panel-title">Impacto Humano Associado</div>
+                <div class="impacto-list" id="impacto-list"></div>
+              </div>
+
+              <div class="especies-section">
+                <div class="panel-title">Espécies Recomendadas para Recuperação</div>
+                <div class="especies-grid" id="especies-grid"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notificação -->
+    <div class="notif" id="notif"></div>
+
+    <script src="./data.js"></script>
+    <script src="./recomendador.js"></script>
+    <script src="./app.js"></script>
+    <script>
+    // ── DADOS EMBUTIDOS (caso data.js não esteja disponível) ──
+    const ALERTAS_DEFAULT = [
+      {
+        id: 1,
+        title: "Margem desmatada no igarapé",
+        biome: "Amazônia",
+        problem: "Perda de vegetação nativa e solo exposto nas margens do igarapé, com risco de assoreamento do curso d'água.",
+        soil: "Argiloso",
+        degradation: "Severa",
+        priority: "Alta",
+        impacts: [
+          "Famílias ribeirinhas perdem acesso à água limpa para consumo e pesca.",
+          "Comunidades indígenas têm territórios e modos de vida ameaçados.",
+          "Aumento de sedimentos pode destruir criadouros naturais de peixes."
+        ],
+        aiClass: "Perda de vegetação nativa",
+        color: "#2d9d5f"
+      },
+      {
+        id: 2,
+        title: "Nascente sem cobertura nativa",
+        biome: "Cerrado",
+        problem: "Desmatamento do entorno da nascente comprometendo a recarga hídrica e expondo o solo a erosão.",
+        soil: "Latossolo",
+        degradation: "Moderada",
+        priority: "Média",
+        impacts: [
+          "Redução da disponibilidade de água para comunidades rurais próximas.",
+          "Assoreamento de rios que abastecem municípios da região.",
+          "Perda de habitat para fauna que depende da umidade local."
+        ],
+        aiClass: "Solo exposto",
+        color: "#d9a441"
+      },
+      {
+        id: 3,
+        title: "Encosta seca com erosão",
+        biome: "Caatinga",
+        problem: "Declividade alta somada à seca prolongada causa erosão laminar e perda progressiva do solo.",
+        soil: "Pedregoso",
+        degradation: "Crítica",
+        priority: "Urgente",
+        impacts: [
+          "Perda irreversível de solo fértil para agricultores familiares.",
+          "Aumento do risco de deslizamentos em períodos de chuva intensa.",
+          "Êxodo rural acelerado pela inviabilização da produção agrícola."
+        ],
+        aiClass: "Queimada",
+        color: "#e07a5f"
+      },
+      {
+        id: 4,
+        title: "Rio assoreado por retirada da mata",
+        biome: "Mata Atlântica",
+        problem: "Remoção da mata ciliar causou assoreamento progressivo do rio, reduzindo sua calha e aumentando enchentes.",
+        soil: "Aluvial",
+        degradation: "Severa",
+        priority: "Alta",
+        impacts: [
+          "Enchentes mais frequentes atingem residências e plantações às margens.",
+          "Queda na qualidade da água que abastece municípios à jusante.",
+          "Destruição de habitats críticos para espécies endêmicas da Mata Atlântica."
+        ],
+        aiClass: "Mata ciliar degradada",
+        color: "#457b9d"
+      }
+    ];
+
+    const ESPECIES_DEFAULT = [
+      { id:1, name:"Castanheira", scientific:"Bertholletia excelsa", biomes:["Amazônia"], soils:["Argiloso","Latossolo"], degradationTolerance:0.55, growthSpeed:0.4, economicViability:0.95, ecosystemServices:0.95, reason:"Espécie icônica da Amazônia com alto potencial de bioeconomia e sequestro de carbono." },
+      { id:2, name:"Andiroba", scientific:"Carapa guianensis", biomes:["Amazônia"], soils:["Argiloso","Aluvial","Adaptável"], degradationTolerance:0.75, growthSpeed:0.65, economicViability:0.8, ecosystemServices:0.85, reason:"Adaptada a solos úmidos e áreas degradadas. Óleo com alto valor medicinal e cosmético." },
+      { id:3, name:"Ingá", scientific:"Inga edulis", biomes:["Amazônia","Mata Atlântica"], soils:["Argiloso","Aluvial","Adaptável"], degradationTolerance:0.85, growthSpeed:0.85, economicViability:0.6, ecosystemServices:0.8, reason:"Crescimento rápido e fixação de nitrogênio aceleram a restauração do solo." },
+      { id:4, name:"Aroeira-do-Cerrado", scientific:"Myracrodruon urundeuva", biomes:["Cerrado","Caatinga"], soils:["Latossolo","Pedregoso","Adaptável"], degradationTolerance:0.88, growthSpeed:0.45, economicViability:0.75, ecosystemServices:0.85, reason:"Extremamente resistente à seca e ao solo compactado. Ideal para encostas degradadas." },
+      { id:5, name:"Mandacaru", scientific:"Cereus jamacaru", biomes:["Caatinga"], soils:["Pedregoso","Adaptável"], degradationTolerance:0.96, growthSpeed:0.5, economicViability:0.6, ecosystemServices:0.8, reason:"Suporta condições críticas de seca e solo pobre, sendo estrutural para a fauna local." },
+      { id:6, name:"Guapuruvu", scientific:"Schizolobium parahyba", biomes:["Mata Atlântica"], soils:["Aluvial","Argiloso","Adaptável"], degradationTolerance:0.7, growthSpeed:0.95, economicViability:0.7, ecosystemServices:0.75, reason:"Um dos crescimentos mais rápidos da Mata Atlântica, ideal para restauração urgente de matas ciliares." },
+    ];
+
+    // ── ESTADO ──
+    let alertas = [];
+    let alertaSelecionado = null;
+    let imagemSelecionada = null;
+
+    // ── INICIALIZAÇÃO ──
+    function inicializar() {
+      // Usa data.js se disponível, senão usa defaults
+      if (window.AMAZONIA40_DATA && window.AMAZONIA40_DATA.alerts) {
+        alertas = window.AMAZONIA40_DATA.alerts.map((a, i) => ({
+          id: i + 1,
+          title: a.title || a.nome || "Alerta " + (i+1),
+          biome: a.biome || a.bioma || "Amazônia",
+          problem: a.problem || a.problema || "",
+          soil: a.soil || a.solo || "Adaptável",
+          degradation: a.degradation || a.degradacao || "Moderada",
+          priority: a.priority || a.prioridade || "Média",
+          impacts: a.impacts || a.impactos || [],
+          aiClass: a.aiClass || "",
+          color: a.color || "#2d9d5f"
+        }));
+      } else {
+        alertas = [...ALERTAS_DEFAULT];
+      }
+      renderAlertas();
+    }
+
+    function renderAlertas() {
+      const lista = document.getElementById('alertas-lista');
+      lista.innerHTML = '';
+      alertas.forEach(a => {
+        const degClass = { Baixa:'', Moderada:'moderado', Severa:'severo', Crítica:'critico' }[a.degradation] || '';
+        const div = document.createElement('div');
+        div.className = 'alerta-card';
+        div.style.setProperty('--alerta-cor', a.color || '#e07a5f');
+        div.dataset.id = a.id;
+        div.onclick = () => selecionarAlerta(a.id);
+        div.innerHTML = `
+          <div class="alerta-biome">${a.biome}</div>
+          <div class="alerta-title">${a.title}</div>
+          <div class="alerta-desc">${a.problem.slice(0, 90)}${a.problem.length > 90 ? '…' : ''}</div>
+          <span class="alerta-badge ${degClass}">${a.degradation}</span>
+        `;
+        lista.appendChild(div);
+      });
+      document.getElementById('stat-alertas').textContent = alertas.length;
+    }
+
+    function selecionarAlerta(id) {
+      alertaSelecionado = alertas.find(a => a.id === id);
+      if (!alertaSelecionado) return;
+
+      // Destaque visual
+      document.querySelectorAll('.alerta-card').forEach(el => el.classList.remove('selected'));
+      document.querySelector(`.alerta-card[data-id="${id}"]`)?.classList.add('selected');
+
+      // Preenche diagnóstico
+      document.getElementById('diag-placeholder').style.display = 'none';
+      document.getElementById('diag-content').classList.add('visible');
+
+      document.getElementById('diag-biome-tag').textContent = alertaSelecionado.biome;
+      document.getElementById('diag-title').textContent = alertaSelecionado.title;
+      document.getElementById('diag-problem').textContent = alertaSelecionado.problem;
+      document.getElementById('diag-solo').textContent = alertaSelecionado.soil || '—';
+      document.getElementById('diag-deg').textContent = alertaSelecionado.degradation || '—';
+      document.getElementById('diag-prior').textContent = alertaSelecionado.priority || '—';
+
+      // Impactos
+      const impList = document.getElementById('impacto-list');
+      impList.innerHTML = '';
+      (alertaSelecionado.impacts || []).forEach(imp => {
+        const div = document.createElement('div');
+        div.className = 'impacto-item';
+        div.textContent = imp;
+        impList.appendChild(div);
+      });
+
+      // Espécies
+      renderEspecies(alertaSelecionado);
+    }
+
+    function renderEspecies(alerta) {
+      const grid = document.getElementById('especies-grid');
+      grid.innerHTML = '';
+
+      let especies;
+      // Tenta usar o recomendador real
+      if (window.AMAZONIA40_RECOMMENDER && window.AMAZONIA40_DATA) {
+        try {
+          especies = window.AMAZONIA40_RECOMMENDER.rankSpecies(alerta);
+        } catch(e) { especies = null; }
+      }
+
+      // Fallback: filtra e pontua manualmente
+      if (!especies || !especies.length) {
+        const fonte = window.AMAZONIA40_DATA?.species || ESPECIES_DEFAULT;
+        const degFactor = { Baixa:0.45, Moderada:0.62, Severa:0.82, Crítica:0.96 }[alerta.degradation] || 0.6;
+        especies = fonte
+          .filter(s => (s.biomes || s.biomas || []).includes(alerta.biome))
+          .map(s => {
+            const soilOk = (s.soils || s.solos || []).includes(alerta.soil) ? 1
+              : (s.soils || s.solos || []).includes("Adaptável") ? 0.82 : 0.45;
+            const degScore = 1 - Math.abs((s.degradationTolerance || 0.7) - degFactor);
+            const score = soilOk * 0.25 + degScore * 0.25 + (s.growthSpeed||0.6) * 0.2 +
+              (s.economicViability||0.5) * 0.15 + (s.ecosystemServices||0.7) * 0.15;
+            return { ...s, score };
+          })
+          .filter(s => s.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3);
+      }
+
+      // Se mesmo assim não há espécies (bioma sem match), pega as 2 mais tolerantes
+      if (!especies.length) {
+        const fonte = window.AMAZONIA40_DATA?.species || ESPECIES_DEFAULT;
+        especies = fonte
+          .sort((a,b) => (b.degradationTolerance||0) - (a.degradationTolerance||0))
+          .slice(0, 2)
+          .map(s => ({ ...s, score: 0.5 }));
+      }
+
+      const ranks = [
+        { label: '🥇 Recomendada', cls: 'prata top' },
+        { label: '🥈 Segunda opção', cls: 'prata' },
+        { label: '🥉 Terceira opção', cls: 'bronze' }
+      ];
+
+      especies.forEach((esp, i) => {
+        const r = ranks[i] || ranks[2];
+        const scoreDisplay = Math.round((esp.score || 0.5) * 100);
+        const card = document.createElement('div');
+        card.className = `especie-card ${i === 0 ? 'top' : ''}`;
+        card.innerHTML = `
+          <div class="especie-rank ${r.cls}">${r.label}</div>
+          <div class="especie-nome">${esp.name || esp.nome}</div>
+          <div class="especie-cientifico">${esp.scientific || esp.cientifico || ''}</div>
+          <div class="especie-score-bar">
+            <div class="especie-score-fill" style="width:${scoreDisplay}%"></div>
+          </div>
+          <div class="especie-score-label">Score de compatibilidade: ${scoreDisplay}%</div>
+          ${esp.reason || esp.motivo ? `<div class="especie-motivo">${esp.reason || esp.motivo}</div>` : ''}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // ── CÂMERA IA ──
+    let mediaStream = null;
+
+    async function abrirWebcam() {
+      try {
+        // Solicita acesso à webcam
+        mediaStream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'environment' },
+          audio: false 
+        });
+        
+        // Mostra o vídeo
+        const video = document.getElementById('webcam-video');
+        video.srcObject = mediaStream;
+        
+        // Exibe o container da webcam e esconde o upload
+        document.getElementById('webcam-container').style.display = 'block';
+        document.getElementById('camera-upload-area').style.display = 'none';
+        document.getElementById('camera-preview').classList.remove('visible');
+        document.getElementById('camera-resultado').classList.remove('visible');
+        document.getElementById('btn-analisar').disabled = true;
+        
+        mostrarNotif('✓ Webcam aberta com sucesso!');
+      } catch (erro) {
+        console.error('Erro ao acessar webcam:', erro);
+        let mensagem = 'Erro ao acessar webcam.';
+        if (erro.name === 'NotAllowedError') {
+          mensagem = 'Permissão negada. Permitir acesso à câmera nos settings do navegador.';
+        } else if (erro.name === 'NotFoundError') {
+          mensagem = 'Nenhuma câmera encontrada no dispositivo.';
+        } else if (erro.name === 'NotSupportedError') {
+          mensagem = 'Webcam não suportada neste navegador.';
+        }
+        mostrarNotif(mensagem);
+      }
+    }
+
+    function fecharWebcam() {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+      
+      const video = document.getElementById('webcam-video');
+      video.srcObject = null;
+      
+      document.getElementById('webcam-container').style.display = 'none';
+      document.getElementById('camera-upload-area').style.display = 'block';
+      mostrarNotif('Webcam fechada.');
+    }
+
+    function capturarWebcam() {
+      const video = document.getElementById('webcam-video');
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0);
+      
+      // Converte para blob e cria um arquivo
+      canvas.toBlob(blob => {
+        const file = new File([blob], 'captura_webcam.jpg', { type: 'image/jpeg' });
+        imagemSelecionada = file;
+        
+        // Mostra o preview
+        const reader = new FileReader();
+        reader.onload = e => {
+          const preview = document.getElementById('camera-preview');
+          preview.src = e.target.result;
+          preview.classList.add('visible');
+          document.getElementById('camera-resultado').classList.remove('visible');
+        };
+        reader.readAsDataURL(file);
+        
+        // Libera a webcam e mostra o preview
+        fecharWebcam();
+        document.getElementById('btn-analisar').disabled = false;
+        mostrarNotif('✓ Foto capturada!');
+      }, 'image/jpeg', 0.95);
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      imagemSelecionada = file;
+
+      // Fecha webcam se estiver aberta
+      if (mediaStream) {
+        fecharWebcam();
+      }
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = document.getElementById('camera-preview');
+        preview.src = e.target.result;
+        preview.classList.add('visible');
+        document.getElementById('camera-resultado').classList.remove('visible');
+      };
+      reader.readAsDataURL(file);
+
+      document.getElementById('btn-analisar').disabled = false;
+    }
+
+    async function analisarImagem() {
+      if (!imagemSelecionada) return;
+      const btn = document.getElementById('btn-analisar');
+      btn.disabled = true;
+      btn.textContent = 'Analisando…';
+
+      // Tenta API Python
+      let resultado = null;
+      try {
+        const form = new FormData();
+        form.append('imagem', imagemSelecionada);
+        const resp = await fetch('http://127.0.0.1:5000/analisar', { method:'POST', body:form });
+        if (resp.ok) resultado = await resp.json();
+      } catch (_) { /* API não disponível, usa simulação */ }
+
+      // Simulação local
+      if (!resultado) {
+        const cenarios = [
+          { classe: "Vegetação preservada", confianca: 0.87, metodo: "Simulação local", explicacao: "A imagem apresenta cobertura vegetal predominante e poucos sinais visuais de degradação." },
+          { classe: "Solo exposto", confianca: 0.74, metodo: "Simulação local", explicacao: "A proporção de solo aparente é maior que a cobertura vegetal, sugerindo erosão ou área degradada." },
+          { classe: alertaSelecionado?.aiClass || "Perda de vegetação nativa", confianca: 0.81, metodo: "Simulação (baseada no alerta)", explicacao: "Análise baseada no contexto do alerta selecionado e nas heurísticas de cor/textura." },
+        ];
+        resultado = alertaSelecionado ? cenarios[2] : cenarios[Math.floor(Math.random() * 2)];
+      }
+
+      // Exibe resultado
+      document.getElementById('cam-metodo').textContent = resultado.metodo || 'IA';
+      document.getElementById('cam-classe').textContent = resultado.classe || '—';
+      const pct = Math.round((resultado.confianca || 0) * 100);
+      document.getElementById('cam-conf-pct').textContent = pct + '%';
+      document.getElementById('cam-conf-bar').style.width = pct + '%';
+      document.getElementById('cam-explicacao').textContent = resultado.explicacao || '';
+      document.getElementById('camera-resultado').classList.add('visible');
+
+      btn.disabled = false;
+      btn.textContent = 'Analisar com IA';
+    }
+
+    // ── CADASTRO DE ALERTA ──
+    function cadastrarAlerta() {
+      const titulo = document.getElementById('novo-titulo').value.trim();
+      const bioma = document.getElementById('novo-bioma').value;
+      const degradacao = document.getElementById('novo-degradacao').value;
+      const desc = document.getElementById('novo-desc').value.trim();
+
+      if (!titulo) { mostrarNotif('Preencha o título do alerta.'); return; }
+
+      const cores = { Amazônia:'#2d9d5f', Cerrado:'#d9a441', Caatinga:'#e07a5f', 'Mata Atlântica':'#457b9d' };
+      const solos = { Amazônia:'Argiloso', Cerrado:'Latossolo', Caatinga:'Pedregoso', 'Mata Atlântica':'Aluvial' };
+
+      const novo = {
+        id: alertas.length + 1,
+        title: titulo,
+        biome: bioma,
+        problem: desc || `Alerta de ${degradacao.toLowerCase()} degradação registrado no bioma ${bioma}.`,
+        soil: solos[bioma] || 'Adaptável',
+        degradation: degradacao,
+        priority: { Baixa:'Baixa', Moderada:'Média', Severa:'Alta', Crítica:'Urgente' }[degradacao] || 'Média',
+        impacts: ['Impacto ambiental em avaliação.', 'Comunidades locais podem ser afetadas.'],
+        aiClass: 'Perda de vegetação nativa',
+        color: cores[bioma] || '#2d9d5f'
+      };
+
+      alertas.unshift(novo);
+      renderAlertas();
+      selecionarAlerta(novo.id);
+
+      document.getElementById('novo-titulo').value = '';
+      document.getElementById('novo-desc').value = '';
+      mostrarNotif('Alerta cadastrado com sucesso!');
+    }
+
+    // ── EXPORTAR RELATÓRIO ──
+    function exportarRelatorio() {
+      if (!alertaSelecionado) return;
+      const linhas = [
+        'AMAZÔNIA 4.0 — RELATÓRIO DE DIAGNÓSTICO',
+        '='.repeat(45),
+        '',
+        `Data: ${new Date().toLocaleString('pt-BR')}`,
+        '',
+        `ALERTA: ${alertaSelecionado.title}`,
+        `Bioma: ${alertaSelecionado.biome}`,
+        `Solo: ${alertaSelecionado.soil}`,
+        `Degradação: ${alertaSelecionado.degradation}`,
+        `Prioridade: ${alertaSelecionado.priority}`,
+        '',
+        'PROBLEMA:',
+        alertaSelecionado.problem,
+        '',
+        'IMPACTO HUMANO:',
+        ...(alertaSelecionado.impacts || []).map((imp, i) => `${i+1}. ${imp}`),
+        '',
+        'ESPÉCIES RECOMENDADAS:',
+        ...(window.AMAZONIA40_DATA?.species || ESPECIES_DEFAULT)
+          .filter(s => (s.biomes || []).includes(alertaSelecionado.biome))
+          .slice(0, 3)
+          .map((s, i) => `${i+1}. ${s.name || s.nome} (${s.scientific || ''})`),
+        '',
+        '—',
+        'Relatório gerado pelo sistema Amazônia 4.0.',
+        'Dados simulados para fins educativos.',
+      ];
+
+      const blob = new Blob([linhas.join('\n')], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio_${alertaSelecionado.title.replace(/\s+/g,'_')}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      mostrarNotif('Relatório exportado!');
+    }
+
+    // ── NOTIFICAÇÃO ──
+    function mostrarNotif(msg) {
+      const el = document.getElementById('notif');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    // ── TROCA DE ABA ──
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.querySelectorAll('.tab-btn')[tab === 'site' ? 0 : 1].classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // ── BOOT ──
+    document.addEventListener('DOMContentLoaded', inicializar);
+    // Caso scripts externos ainda não tenham carregado
+    window.addEventListener('load', () => {
+      if (!alertas.length) inicializar();
+    });
+    </script>
+  </body>
+</html>
