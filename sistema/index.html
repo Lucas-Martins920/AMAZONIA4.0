@@ -841,7 +841,7 @@
 
                 <!-- Webcam View -->
                 <div id="webcam-container" style="display:none; position:relative;">
-                  <video id="webcam-video" style="width:100%; border-radius:8px; background:#000; max-height:300px;"></video>
+                  <video id="webcam-video" autoplay playsinline muted style="width:100%; border-radius:8px; background:#000; max-height:300px;"></video>
                   <div style="display:flex; gap:8px; margin-top:8px;">
                     <button class="camera-analisar-btn" onclick="capturarWebcam()" style="flex:1;">
                       📸 Capturar Foto
@@ -1214,6 +1214,9 @@
         // Mostra o vídeo
         const video = document.getElementById('webcam-video');
         video.srcObject = mediaStream;
+        video.onloadedmetadata = () => {
+        video.play().catch(e => console.error('Erro ao iniciar vídeo:', e));
+        };
         
         // Exibe o container da webcam e esconde o upload
         document.getElementById('webcam-container').style.display = 'block';
